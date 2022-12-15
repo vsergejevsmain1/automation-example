@@ -1,42 +1,18 @@
-name: jmeter
+name: JMeter
 
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-
-  workflow_dispatch:
+on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  run-jmeter:
+    runs-on: windows-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: where are the files?
-        run: |
-           pwd
-           ls
-
-      - name: install jmeter
-        run: |
-          java -version
-          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.4.1.zip
-          unzip apache-jmeter-5.4.1.zip
-          cd apache-jmeter-5.4.1/bin
-          ./jmeter -v
-          pwd
-
-      - name: install plugins
-        run: |
-          cd $GITHUB_WORKSPACE/apache-jmeter-5.4.1
-          wget -q --no-check-certificate https://jmeter-plugins.org/files/packages/jpgc-dummy-0.4.zip  -P .
-          unzip -o jpgc-dummy-0.4.zip  && rm jpgc-dummy-0.4.zip
-
-      - name: run jmx scripts
-        run: |
-         cd $GITHUB_WORKSPACE/apache-jmeter-5.4.1/bin
-         for i in $( ls $GITHUB_WORKSPACE/*.jmx); do
-            ./jmeter -n -t $i;
-         done
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - run: Invoke-WebRequest -Uri https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.1.zip -OutFile apache-jmeter-5.2.1.zip
+      - run: Expand-Archive -Path apache-jmeter-5.2.1.zip -DestinationPath .
+      - run: mv .\apache-jmeter-5.2.1\* .
+      - run: Remove-Item .\apache-jmeter-5.2.1 -Recurse
+      - run: setx PATH $($Env:Path + ';C:\apache-jmeter-5.2.1\bin')
+      - run: jmeter.bat -n -t tests/demo.jmx -l results.jtl
