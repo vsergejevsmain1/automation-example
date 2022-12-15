@@ -1,11 +1,6 @@
 name: Test JMeter Action
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: [master]
+on: push
 
 jobs:
   action_build:
