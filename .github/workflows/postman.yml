@@ -1,0 +1,51 @@
+- name: Newman CLI (Postman) Action
+  # You may pin to the exact commit or the version.
+  # uses: anthonyvscode/newman-action@cdca06b722f82f1a6e2ff4803960dc61c9f46240
+  uses: anthonyvscode/newman-action@v1.1
+  with:
+    # Postman API key
+    apiKey: PMAK-639b6824e443dd40655c9948-XXXX
+    # Collection to use
+    collection: 
+    # Environment to use
+    environment: # optional
+    # Globals to use
+    globals: # optional
+    # Number of iterations to run on the collection
+    iterationCount: # optional, default is 1
+    # Path to CSV or JSON data file
+    iterationData: # optional
+    # Name/ID of folders to run instead of entire collection
+    folder: # optional
+    # Path to be used as working directory
+    workingDir: # optional
+    # Allow reading files outside of working directory
+    insecureFileRead: # optional, default is true
+    # Time to wait for the collection run to complete
+    timeout: # optional
+    # Time to wait for scripts to return a response
+    timeoutRequest: # optional
+    # Time to wait for scripts to return a response
+    timeoutScript: # optional
+    # Time to wait between subsequent requests
+    delayRequest: # optional, default is 0
+    # Follow 3xx responses
+    ignoreRedirects: # optional
+    # Disable SSL verification and allow self-signed SSL
+    insecure: # optional, default is false
+    # Stop collection run gracefully on error
+    bail: # optional, default is false
+    # Always exit cleanly. This will always ensure that it will pass in the Github action even if a test case fails.
+    suppressExitCode: # optional, default is false
+    # Reporter to use
+    reporters: # optional
+    # Reporter options
+    reporter: # optional
+    # Modify colored CLI output
+    color: # optional, default is auto
+    # Path to public client certificate
+    sslClientCert: # optional
+    # Path to secret client key file
+    sslClientKey: # optional
+    # Secret client key passphrase
+    sslClientPassphrase: # optional
