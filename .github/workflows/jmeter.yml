@@ -13,5 +13,4 @@ jobs:
       - run: wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.1.tgz
       - run: tar -xzf apache-jmeter-5.2.1.tgz
       - run: mv apache-jmeter-5.2.1 /jmeter
-      - run: export PATH=$PATH:/local/jmeter/bin
-      - run: jmeter -n -t demo.jmx -l results.jtl
+      - run: jmeter -n -t tests/demo.jmx -l results.jtl
