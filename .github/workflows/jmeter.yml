@@ -12,6 +12,6 @@ jobs:
           java-version: 11
       - run: wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.1.tgz
       - run: tar -xzf apache-jmeter-5.2.1.tgz
-      - run: mv apache-jmeter-5.2.1 /usr/local/jmeter
-      - run: export PATH=$PATH:/usr/local/jmeter/bin
+      - run: mv apache-jmeter-5.2.1 /jmeter
+      - run: export PATH=$PATH:/local/jmeter/bin
       - run: jmeter -n -t demo.jmx -l results.jtl
