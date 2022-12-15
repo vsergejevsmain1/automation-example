@@ -15,4 +15,4 @@ jobs:
       - run: mv .\apache-jmeter-5.2.1\* .
       - run: Remove-Item .\apache-jmeter-5.2.1 -Recurse
       - run: setx PATH $($Env:Path + ';C:\apache-jmeter-5.2.1\bin')
-      - run: jmeter.bat -n -t tests/demo.jmx -l results.jtl
+      - run: jmeter.bat -n -t demo.jmx -l results.jtl
