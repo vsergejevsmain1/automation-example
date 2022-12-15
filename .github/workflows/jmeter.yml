@@ -1,32 +1,42 @@
-name: JMeter
+name: jmeter
 
-on: push
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
 
 jobs:
-  action_build:
+  build:
     runs-on: ubuntu-latest
+
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: where are the files?
+        run: |
+           pwd
+           ls
 
-      - name: Run JMeter Action on a test
-        with:
-          testFilePath: tests/demo.jmx
-          outputReportsFolder: reports/
-          args: "--loglevel INFO"
+      - name: install jmeter
+        run: |
+          java -version
+          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.4.1.zip
+          unzip apache-jmeter-5.4.1.zip
+          cd apache-jmeter-5.4.1/bin
+          ./jmeter -v
+          pwd
 
-      - name: Run JMeter Action on other tests
-        uses: rbhadti94/apache-jmeter-action@v0.5.0
-        with:
-          testFilePath: other-tests/
-          outputReportsFolder: other_reports/
-          args: "--loglevel INFO"
+      - name: install plugins
+        run: |
+          cd $GITHUB_WORKSPACE/apache-jmeter-5.4.1
+          wget -q --no-check-certificate https://jmeter-plugins.org/files/packages/jpgc-dummy-0.4.zip  -P .
+          unzip -o jpgc-dummy-0.4.zip  && rm jpgc-dummy-0.4.zip
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: jmeter-test-results
-          path: reports/
-
-      - uses: actions/upload-artifact@v1
-        with:
-          name: jmeter-test-results-other
-          path: other_reports/
+      - name: run jmx scripts
+        run: |
+         cd $GITHUB_WORKSPACE/apache-jmeter-5.4.1/bin
+         for i in $( ls $GITHUB_WORKSPACE/*.jmx); do
+            ./jmeter -n -t $i;
+         done
