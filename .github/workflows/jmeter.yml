@@ -3,14 +3,30 @@ name: JMeter
 on: push
 
 jobs:
-  run-jmeter:
+  action_build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+
+      - name: Run JMeter Action on a test
         with:
-          java-version: 11
-      - run: wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.1.tgz
-      - run: tar -xzf apache-jmeter-5.2.1.tgz
-      - run: mv apache-jmeter-5.2.1 /jmeter
-      - run: jmeter -n -t tests/demo.jmx -l results.jtl
+          testFilePath: tests/demo.jmx
+          outputReportsFolder: reports/
+          args: "--loglevel INFO"
+
+      - name: Run JMeter Action on other tests
+        uses: rbhadti94/apache-jmeter-action@v0.5.0
+        with:
+          testFilePath: other-tests/
+          outputReportsFolder: other_reports/
+          args: "--loglevel INFO"
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results
+          path: reports/
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results-other
+          path: other_reports/
