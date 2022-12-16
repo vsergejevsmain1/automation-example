@@ -14,9 +14,3 @@ jobs:
           postman-iteration-data: '{"key": "value"}'
           postman-result-overwrite: true
           postman-fail-on-assertions: true
-          
-      - uses: latency-lingo/api-action@v1
-        with:
-          api-key: ${{ secrets.LATENCY_LINGO_API_KEY }}
-          data-type: 'json'
-          data: '{ "results": [ {{#each postman.iteration-results}} {{jsonify this}} {{#unless @last}},{{/unless}} {{/each}} ] }'
