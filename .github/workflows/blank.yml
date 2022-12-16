@@ -1,0 +1,22 @@
+name: Postman test
+
+on: [push]
+
+jobs:
+  postman:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: postman/postman-action@v3.0.0
+        with:
+          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
+          postman-iteration-count: 1
+          postman-iteration-data: '{"key": "value"}'
+          postman-result-overwrite: true
+          postman-fail-on-assertions: true
+          
+      - uses: latency-lingo/api-action@v1
+        with:
+          api-key: ${{ secrets.LATENCY_LINGO_API_KEY }}
+          data-type: 'json'
+          data: '{ "results": [ {{#each postman.iteration-results}} {{jsonify this}} {{#unless @last}},{{/unless}} {{/each}} ] }'
